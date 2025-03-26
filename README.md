@@ -16,3 +16,5 @@
 
 - SECRET_CONNECTION = mongodb connection string
 - SECRET_KEY_JWT = signing key for jwt
+
+String de conexão local:  mongodb://localhost:27017
