@@ -4,6 +4,9 @@ import { manipulationMongoDb } from "../db/mongodb.js"
 
 export default async function router(app, options){
     
+
+    //USERS
+
     app.post("/login", async(req, res)=>{
         const {email, password} = req.body
 
@@ -74,5 +77,15 @@ export default async function router(app, options){
         res.status(200).send({message:"Usuário criado!!", token})
 
 
+        
+    })
+
+    //CUPONS
+    app.get("/cupons", async(req, res)=>{
+        const instance = manipulationMongoDb("cafeDeBar","cupons")
+
+        const cupons = await instance.find().toArray()
+
+        res.status(200).send(cupons)
     })
 }
