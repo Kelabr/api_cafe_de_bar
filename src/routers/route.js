@@ -81,10 +81,11 @@ export default async function router(app, options){
     })
 
     //CUPONS
-    app.get("/cupons", async(req, res)=>{
+    app.get("/cupons/:tipo", async(req, res)=>{
         const instance = manipulationMongoDb("cafeDeBar","cupons")
+        const {tipo} = req.params
 
-        const cupons = await instance.find().toArray()
+        const cupons = await instance.find({tipo}).toArray()
 
         res.status(200).send(cupons)
     })
