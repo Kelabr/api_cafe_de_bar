@@ -2,6 +2,7 @@ import {jwtVerify, SignJWT} from "jose"
 import bcrypt from "bcryptjs"
 import { manipulationMongoDb } from "../db/mongodb.js"
 import { ObjectId } from "mongodb"
+import QRCode from 'qrcode';
 
 export default async function router(app, options){
     
@@ -101,4 +102,21 @@ export default async function router(app, options){
 
         res.status(200).send(cupons)
     })
+
+    app.get("/qrcode", async (req, res)=>{
+        // const {id} = req.params;
+
+        const url = "https://google.com.br"
+
+        try{
+            const qrcodeUrl = await QRCode.toDataURL(url)
+            res.type("image/png").send(Buffer.from(qrcodeUrl.split(",")[1], "base64"));
+        }catch(error){
+            res.status(500).send({error:"Erro ao gerar QRCODE"})
+        }
+    })
+
+
+
+
 }
