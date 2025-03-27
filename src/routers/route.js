@@ -1,6 +1,7 @@
 import {jwtVerify, SignJWT} from "jose"
 import bcrypt from "bcryptjs"
 import { manipulationMongoDb } from "../db/mongodb.js"
+import { ObjectId } from "mongodb"
 
 export default async function router(app, options){
     
@@ -86,6 +87,17 @@ export default async function router(app, options){
         const {tipo} = req.params
 
         const cupons = await instance.find({tipo}).toArray()
+
+        res.status(200).send(cupons)
+    })
+
+    app.get("/cupons/:tipo/:id", async(req, res)=>{
+        const instance = manipulationMongoDb("cafeDeBar","cupons")
+        const {tipo, id} = req.params
+
+        const query = {tipo, _id: new ObjectId(id)}
+
+        const cupons = await instance.find(query).toArray()
 
         res.status(200).send(cupons)
     })
