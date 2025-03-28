@@ -4,6 +4,7 @@ import { manipulationMongoDb } from "../db/mongodb.js"
 import { ObjectId } from "mongodb"
 import QRCode from 'qrcode';
 
+
 export default async function router(app, options){
     
 
@@ -47,17 +48,18 @@ export default async function router(app, options){
 
 
     app.post("/register", async(req, res)=>{
-        const {name, email, sex, password} = req.body
+        const {nome, email, password} = req.body
 
-        if(!name || !email || !sex || !password){
-            res.status(409).send({message:"Todos os campos precisam ser preenchidos"}) 
+
+        if(!nome || !email || !password){
+           return res.status(409).send({message:"Todos os campos precisam ser preenchidos"}) 
         }
 
         const cryptPassword = bcrypt.hashSync(password, 10)
 
         const instance = manipulationMongoDb("teste","users")
 
-        await instance.insertOne({name, email, sex, password:cryptPassword})
+        await instance.insertOne({nome, email, password:cryptPassword})
 
         const id = await instance.findOne({email:email})
 
@@ -72,11 +74,11 @@ export default async function router(app, options){
             httpOnly: true,
             path:"/",
             maxAge:3600,
-            secure:true,
+            // secure:true,
             sameSite:"Lax"
         })
 
-        res.status(200).send({message:"Usuário criado!!", token})
+        return res.status(200).send({message:"Usuário criado!!", token})
 
 
         

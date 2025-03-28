@@ -11,7 +11,7 @@ const app = fastify()
 app.register(router, {prefix:"api"})
 
 app.register(cors, {
-    origin:"*",
+    origin:"http://localhost:3000",
     credentials:true
 })
 
